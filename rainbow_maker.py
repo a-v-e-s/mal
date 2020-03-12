@@ -5,29 +5,37 @@ Convert passwords from a gigantic text file into associated hash values
 -Jon David Tannehill
 """
 
-import hashlib, gzip, pickle
+import hashlib, gzip, pickle, optparse
 from os.path import isdir, isfile, join
 from itertools import islice
 
-INCREMENT = 1000000
+INCREMENT = 100000
 Metadict = {}
 
 
-def rainbow_maker(file, function, dire):
+def rainbow_maker(file, function, dire, salt_prefix=None, salt_suffix=None):
     length = sum(1 for line in open(file, 'r'))
     lines_read = 0
-    with open(file, 'r') as f:
+    with open(file, 'rb') as f:
         while lines_read < length:
             megadict = {}
             if (length - lines_read) >= INCREMENT:
                 chunk = islice(f, lines_read, lines_read + INCREMENT)
                 for x in chunk:
-                    megadict[x] = function(x).hexdigest()
+                    megadict[x] = (
+                        function(salt_prefix + x).digest() if salt_prefix
+                        else function(x + salt_suffix).digest() if salt_suffix
+                        else function(x).digest()
+                    )
                 lines_read += INCREMENT
             elif lines_read < length:
                 chunk = islice(f, lines_read, length)
                 for x in chunk:
-                    megadict[x] = function(x).hexdigest()
+                    megadict[x] = (
+                        function(salt_prefix + x).digest() if salt_prefix
+                        else function(x + salt_suffix).digest() if salt_suffix
+                        else function(x).digest()
+                    )
                 lines_read = length
             #
             first_4 = sorted(list(megadict.keys()))[:4]
@@ -57,4 +65,5 @@ if __name__ == '__main__':
     if not isdir(dire):
         raise NotADirectoryError(dire, 'is not a directory')
     #
-    rainbow_maker(path, options[choice], dire)
+
+    rainbow_maker(path, options[choice], dire, salt_prefix, salt_suffix)
