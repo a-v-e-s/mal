@@ -38,7 +38,7 @@ def rainbow_maker(file, function, dire, salt_prefix=None, salt_suffix=None):
                     )
                 lines_read = length
             #
-            first_8 = sorted(list(megadict.keys()))[:8]
+            first_8 = sorted(list(megadict.keys()))[0][:8]
             Metadict[first_8] = megadict
     #
     with open(join(dire, 'rainbow_table_' + str(function.__name__)), 'wb') as g:
