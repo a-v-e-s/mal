@@ -14,8 +14,7 @@ while read url; do
 		if [[ `jobs -r | wc -l` -ge $CPUS_TO_USE ]]; then
 			sleep 1 && continue
 		fi
-		python3 -m youtube_dl --username "$EMAIL" --password "$PASSWORD" "$url" &
+		python3 -m youtube_dl --username "$EMAIL" --password "$PASSWORD" "$url" & || echo "youtube_dl failed, error code: $?"
 		break
 	done
 done < "$INPUT_FILE"
-
